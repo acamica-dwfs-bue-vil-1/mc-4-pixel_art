@@ -22,6 +22,8 @@ var nombreColores = ['White', 'LightYellow',
 
 var paleta = document.getElementById('paleta');
 var grilla = document.getElementById('grilla-pixeles');
+var indicadorColor = document.getElementById('indicador-de-color');
+var mouseClick = false;
 
 // Variable para guardar el elemento 'color-personalizado'
 // Es decir, el que se elige con la rueda de color.
@@ -32,10 +34,11 @@ colorPersonalizado.addEventListener('change',
     // Se guarda el color de la rueda en colorActual
     colorActual = colorPersonalizado.value;
     // Completar para que cambie el indicador-de-color al colorActual
+    $('#indicador-de-color').css('background-color', colorActual);
   })
 );
 
-function paletaColor(){
+function crearPaleta(){
   for(var i=0 ; i < nombreColores.length ; i++){
     var nuevoDiv = document.createElement('div');
     nuevoDiv.style.backgroundColor = nombreColores[i];
@@ -48,8 +51,48 @@ function paletaColor(){
 }
 
 function crearGrilla(){
-  for (var i = 0; i <= 1750; i++) {
+  for (var i = 0; i <= 1748; i++) {
     var pixel = document.createElement('div');
     grilla.appendChild(pixel);
   }
 }
+
+$(document).ready(function(){
+  crearGrilla();
+  crearPaleta();
+});
+
+paleta.addEventListener('click',(function(e){
+  indicadorColor.style.backgroundColor = e.target.style.backgroundColor;
+  // var colorSeleccionado = e.target.style.backgroundColor;
+  // colorActivo.style.backgroundColor = colorSeleccionado;
+  // var $color = $('#indicador-de-color');
+  // colorActivo.style.backgroundColor = $('color-paleta');
+  })
+);
+
+grilla.addEventListener('mousedown',(function(e){
+  mouseClick = true;
+  e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
+  console.log(mouseClick);
+  })
+);
+
+grilla.addEventListener('mouseup', function(){
+  mouseClick = false;
+  console.log(mouseClick);
+})
+
+//Asi no funciona
+/*grilla.onMouseMove = function(e){
+  if (mouseClick == true){
+    e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
+  }
+};*/
+
+//Con los dos = se compara, con uno solo se asigna un valor
+grilla.addEventListener('mousemove', function(e){
+  if (mouseClick == true){
+    e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
+  }
+});
