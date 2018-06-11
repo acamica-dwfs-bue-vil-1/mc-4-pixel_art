@@ -23,30 +23,16 @@ var nombreColores = ['White', 'LightYellow',
 var paleta = document.getElementById('paleta');
 var grilla = document.getElementById('grilla-pixeles');
 var indicadorColor = document.getElementById('indicador-de-color');
+var colorPersonalizado = document.getElementById('color-personalizado');
 var mouseClick = false;
 
-// Variable para guardar el elemento 'color-personalizado'
-// Es decir, el que se elige con la rueda de color.
-var colorPersonalizado = document.getElementById('color-personalizado');
-
-colorPersonalizado.addEventListener('change',
-  (function() {
-    // Se guarda el color de la rueda en colorActual
-    colorActual = colorPersonalizado.value;
-    // Completar para que cambie el indicador-de-color al colorActual
-    $('#indicador-de-color').css('background-color', colorActual);
-  })
-);
 
 function crearPaleta(){
   for(var i=0 ; i < nombreColores.length ; i++){
-    var nuevoDiv = document.createElement('div');
-    nuevoDiv.style.backgroundColor = nombreColores[i];
-    nuevoDiv.className = 'color-paleta';
-    paleta.appendChild(nuevoDiv);
-    // nuevoDiv.textContent = nombresDeColores(i);
-    // var st = nuevoDiv.style;
-    // st.backgroundColor = 'color';
+    var color = document.createElement('div');
+    color.style.backgroundColor = nombreColores[i];
+    color.className = 'color-paleta';
+    paleta.appendChild(color);
   }
 }
 
@@ -62,12 +48,16 @@ $(document).ready(function(){
   crearPaleta();
 });
 
+
 paleta.addEventListener('click',(function(e){
   indicadorColor.style.backgroundColor = e.target.style.backgroundColor;
-  // var colorSeleccionado = e.target.style.backgroundColor;
-  // colorActivo.style.backgroundColor = colorSeleccionado;
-  // var $color = $('#indicador-de-color');
-  // colorActivo.style.backgroundColor = $('color-paleta');
+  })
+);
+
+colorPersonalizado.addEventListener('change',(function(){
+    colorActual = colorPersonalizado.value;
+    // Completar para que cambie el indicador-de-color al colorActual
+    $('#indicador-de-color').css('background-color', colorActual);
   })
 );
 
@@ -83,16 +73,41 @@ grilla.addEventListener('mouseup', function(){
   console.log(mouseClick);
 })
 
-//Asi no funciona
-/*grilla.onMouseMove = function(e){
-  if (mouseClick == true){
-    e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
-  }
-};*/
-
-//Con los dos = se compara, con uno solo se asigna un valor
 grilla.addEventListener('mousemove', function(e){
   if (mouseClick == true){
     e.target.style.backgroundColor = indicadorColor.style.backgroundColor;
   }
 });
+
+
+$('#borrar').click(function(){
+  $('#grilla-pixeles').children().animate({'background-color': '#ffffff'}, 1000);
+});
+
+//lo de "eval" me lo copie de Eitan
+$('.imgs img').click(function(){
+  var $imagen = eval($(this).attr('id'));
+  console.log($imagen);
+  cargarSuperheroe($imagen);
+})
+
+$('#guardar').click(function(){
+  guardarPixelArt();
+});
+
+//primer intento de cargar héroes
+// $('#batman').click(function(){
+//   cargarSuperheroe(batman);
+// });
+//
+// $('#wonder').click(function(){
+//   cargarSuperheroe(wonder);
+// });
+//
+// $('#flash').click(function(){
+//   cargarSuperheroe(flash);
+// });
+//
+// $('#invisible').click(function(){
+//   cargarSuperheroe(invisible);
+// });
